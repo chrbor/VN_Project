@@ -15,8 +15,9 @@ public class VNOutput : MonoBehaviour
 
     public RectTransform textField;
     private TextMeshProUGUI dialogText, nameText;
+    private string writtenText;
 
-    char[] sepTag = new char[] { ' ', ',', '=', ':', ';', '|'};
+    char[] sepTag = new char[] { ',', '=', ':', ';', '|'};
     float ptr_limit;
     int ptr;
 
@@ -31,23 +32,26 @@ public class VNOutput : MonoBehaviour
     public IEnumerator PlayText(OutputSettings output)
     {
         dialogText.text = "";
+        writtenText = "";
         output.speed = speechSpeed;
         output.text = output.text.Remove(output.text.Length - 1, 1);
         yield return new WaitForFixedUpdate();
 
-        Debug.Log("dialog: " + dialogText.text.Length + ", output: " + output.text.Length);
+        Debug.Log("dialog: " + dialogText.text.Length + ", output: " + output.text);
 
         //laufe alle buchstaben ab und schreibe sie in das dialog-Feld:
         ptr = 0;
         ptr_limit = 0;
-        while (dialogText.text.Length < output.text.Length)
+        while (writtenText.Length < output.text.Length)
         {
             if (output.speed > 0)
             {
                 while(Mathf.FloorToInt(ptr_limit) < ptr && !Input.anyKey && Input.touchCount == 0)
                 {
+                    dialogText.text = vnEffects.UpdateTextFX(writtenText);
+
                     ptr_limit += output.speed;
-                    yield return new WaitForFixedUpdate();
+                    yield return new WaitForEndOfFrame();
                 }
             }
 
@@ -55,24 +59,35 @@ public class VNOutput : MonoBehaviour
             CheckTag(output);
             if(output.pause > 0)
             {
-                yield return new WaitForSeconds(output.pause);
+                for(float count = 0; count < output.pause; count += Time.deltaTime)
+                {
+                    dialogText.text = vnEffects.UpdateTextFX(writtenText);
+                    yield return new WaitForEndOfFrame();
+                }
                 output.pause = 0;
             }
 
+            //schreibe text:
+            writtenText += output.text[ptr++];
 
-            dialogText.text += output.text[ptr++];
-
+            //skip bei Tastendruck:
             if (Input.anyKey || Input.touchCount != 0) break;
         }
 
-        if(dialogText.text.Length < output.text.Length)
+        if(writtenText.Length < output.text.Length)
         {
             //noch inkorrekt:
-            dialogText.text += output.text.Substring(dialogText.text.Length);
+            writtenText += output.text.Substring(writtenText.Length);
+            yield return new WaitUntil(() => !Input.anyKey && Input.touchCount == 0);
+
         }
 
-        //yield return new WaitUntil(() => !Input.anyKey && Input.touchCount == 0);
-        yield return new WaitUntil(() => Input.anyKey || Input.touchCount != 0);
+        //Update die effekte, solange das textfeld aktiv ist:
+        while(!Input.anyKey && Input.touchCount == 0)
+        {
+            dialogText.text = vnEffects.UpdateTextFX(writtenText);
+            yield return new WaitForEndOfFrame();
+        }
         yield return new WaitUntil(() => !Input.anyKey && Input.touchCount == 0);
 
 
@@ -87,14 +102,14 @@ public class VNOutput : MonoBehaviour
     /// <param name="output"></param>
     void CheckTag(OutputSettings output)
     {
-        char nxtChar = output.text[dialogText.text.Length];
+        char nxtChar = output.text[writtenText.Length];
         if (nxtChar != '<') return;
 
-        int tagLength = output.text.IndexOf('>', dialogText.text.Length) - dialogText.text.Length;
+        int tagLength = output.text.IndexOf('>', writtenText.Length) - writtenText.Length;
         if (tagLength < 0 || tagLength > 50) return;
         //Debug.Log("tagLength: " + tagLength + ", dialogLength: " + dialogText.text.Length + ", outputText: " + output.text.Length);
 
-        string tagString = output.text.Substring(dialogText.text.Length+1, tagLength-1);
+        string tagString = output.text.Substring(writtenText.Length+1, tagLength-1).Replace(" ", string.Empty);
         string[] tagStrings = tagString.Split(sepTag, System.StringSplitOptions.RemoveEmptyEntries);
 
 
@@ -127,27 +142,23 @@ public class VNOutput : MonoBehaviour
             default://FX
                 MethodInfo method = vnEffects.GetType().GetMethod("_" + tagStrings[0]);
 
-                if(method == null)
+                if (method == null)
                 {
-                    Debug.Log("überspringe tag: " + tagStrings[0] + " um " + tagLength);
+                    //Debug.Log("überspringe tag: " + tagStrings[0] + " um " + tagLength);
 
                     //Falls nicht FX:
                     skipRemove = true;
                     break;
                 }
-                if (!isEnd) vnEffects.StartFX(tagStrings, method, ptr);//method.Invoke(vnEffects, new object[] { tagStrings, ptr });
+                if (isEnd) vnEffects.EndFX(tagStrings[0], ptr);
+                else vnEffects.StartFX(tagStrings, method, ptr);
                 break;
         }
 
         //Remove tag:
-        if (!skipRemove) { output.text = output.text.Remove(dialogText.text.Length, tagLength + 1); Debug.Log("shortened output:\n" + output.text); CheckTag(output); }
+        if (!skipRemove) { output.text = output.text.Remove(writtenText.Length, tagLength + 1); /*Debug.Log("shortened output:\n" + output.text);*/ CheckTag(output); }
         else { ptr_limit += tagLength; }//überspringe tag
     }
-
-
-
-
-
 
 
 

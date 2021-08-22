@@ -1,103 +1,103 @@
-#Dies ist ein Kommentar!
+//Dies ist ein Kommentar!
 
-#Hier eine kurze Erklärung, wie das Programm funktioniert:
-#Das Programm arbeitet mit TextMeshPro
-#Ein Befehl kann eine Transition, ein Effekt oder eine Textausgabe sein
-
-
-#Eine TEXTAUSGABE sieht folgend aus:
-#name:
-#[overlay] (optional)
-#[Zeit] (optional)
-#Text, der gesprochen wird.
-
-#Wenn kein Name angegeben werden soll, dann muss nur doppelpunkt geschrieben werden
-#Um Doppelpunkte in der Textausgabe zu verwenden darf dahinter kein Zeilenumbruch gesetzt werden
-#Wenn overlay angegeben ist, dann umspannt das TextFeld den ganzen Bildschirm
-#Die Zeit gibt an ob und ab wann der nächste Befehl automatisch durchgeführt wird
-#Standardmäßig ist die Zeit <0sec und damit ausgeschaltet
+//Hier eine kurze Erklärung, wie das Programm funktioniert:
+//Das Programm arbeitet mit TextMeshPro
+//Ein Befehl kann eine Transition, ein Effekt oder eine Textausgabe sein
 
 
-#Eine TRANSITION sieht folgend aus:
-#transition:
-#[/pfad/zum/nächsten/Hintergrund] (optional)
-#[NameDerTransition] (optional)
-#[Zeit] (optional)
+//Eine TEXTAUSGABE sieht folgend aus:
+//name:
+//[overlay] (optional)
+//[Zeit] (optional)
+//Text, der gesprochen wird.
 
-#Wird bei der Transition kein Hintergrund angegeben, dann läuft die Transition in den leeren Hintergrund
-#Wird kein Name der Transition angegeben, dann wird der nächste Hintergrund sofort angezeigt
-#Die Zeit wie schnell die Transition durchgeführt wird
-#Standardmäßig ist die Zeit =1sec und führt damit innerhalb einer Sekunde aus
-#Um Autoplay zu aktivieren, muss durch ", " eine zweite Zeit an die erste angereit werden.
-#Die zweite Zeit gibt an, ab wann das nächste Kommando abgespielt wird
-
-
-#Eine TRANSITION EINES CHARS sieht folgend aus:
-#name transition:
-#[NameDerAnimation] (obligatorisch)
-#[hide] (optional)
-#[NameDerTransition] (optional)
-#[Position] (optional)
-#[Zeit] (optional)
-
-#Um mehrere Chars gleichzeitig eine Transition ablaufen zu lassen können diese durch ", " aneinandergereit werden
-#Wird [hide] angegeben, dann wird die Transition rückwärts abgespielt und die Char-Gruppe nach der Transition gelöscht
-#Wird bei der Transition kein Name angegeben, dann wird der Char sofort dargestellt
-#Die Position gibt an, wo der Charakter erscheint. Dabei ist (0:0) in der links-unteren und (100:100) in der rechts-oberen Ecke des Bildschirms
-#Wenn die Position nicht angegeben wird, dann wird die x-position gemittelt und die y-position auf y_default gesetzt (siehe Grundeinstellungen)
-#Die Zeit wie schnell die Transition durchgeführt wird
-#Standardmäßig ist die Zeit =1sec und führt damit innerhalb einer Sekunde aus
-#Um Autoplay zu aktivieren, muss durch ", " eine zweite Zeit an die erste angereit werden.
-#Die zweite Zeit gibt an, ab wann das nächste Kommando abgespielt wird
+//Wenn kein Name angegeben werden soll, dann muss nur doppelpunkt geschrieben werden
+//Um Doppelpunkte in der Textausgabe zu verwenden darf dahinter kein Zeilenumbruch gesetzt werden
+//Wenn overlay angegeben ist, dann umspannt das TextFeld den ganzen Bildschirm
+//Die Zeit gibt an ob und ab wann der nächste Befehl automatisch durchgeführt wird
+//Standardmäßig ist die Zeit <0sec und damit ausgeschaltet
 
 
-#Ein EFFEKT sieht folgend aus:
-#effect:
-#[NameDesEffektes] (optional)
-#[stop] (optional)
-#[Zeit] (optional)
+//Eine TRANSITION sieht folgend aus:
+//transition:
+//[/pfad/zum/nächsten/Hintergrund] (optional)
+//[NameDerTransition] (optional)
+//[Zeit] (optional)
 
-#Es können mehrere Effekte mit ", " aneinandergereit werden
-#Ein Effekt wird gestoppt, wenn entweder das Ende dieses Textdokumentes erreicht wird oder mit dem Modifier [stop] gestoppt wird
-#Steht [stop] alleine, dann werden alle Effekte gestoppt
-#Die Zeit wie schnell der Effekt aktiviert wird
-#Standardmäßig ist die Zeit =1sec und führt damit innerhalb einer Sekunde aus
-#Um Autoplay zu aktivieren, muss durch ", " eine zweite Zeit an die erste angereit werden.
-#Die zweite Zeit gibt an, ab wann das nächste Kommando abgespielt wird
-
-#Befehle für die GRUNDEINSTELLUNGEN: (optional)
-
-#speechAnimation on/off (default ist off)
-#speechSpeed 5 (default ist 1)
-#y_default 65 (default ist 50)
-
-#Grundeinstellungen müssen immer vor dem ersten Kommando stehen und gelten für das ganze Dokument 
-#speechAnimation [de]aktiviert Sprech-Animation. Wenn die Animation nicht existiert, dann wird automatisch auf off gestellt
-#speechSpeed gibt an wieviele Buchstaben pro Update(=0.02sec) geschrieben werden
-#wenn speechSpeed kleiner oder gleich 0 ist, dann wird der Text direkt angezeigt
-#y_default gibt an, auf welcher Höhe die Chars standardmäßig eingeblendet werden
+//Wird bei der Transition kein Hintergrund angegeben, dann läuft die Transition in den leeren Hintergrund
+//Wird kein Name der Transition angegeben, dann wird der nächste Hintergrund sofort angezeigt
+//Die Zeit wie schnell die Transition durchgeführt wird
+//Standardmäßig ist die Zeit =1sec und führt damit innerhalb einer Sekunde aus
+//Um Autoplay zu aktivieren, muss durch ", " eine zweite Zeit an die erste angereit werden.
+//Die zweite Zeit gibt an, ab wann das nächste Kommando abgespielt wird
 
 
-#TEXT_TAGS:
-#siehe dazu: http://digitalnativestudios.com/textmeshpro/docs/rich-text/
-#zusätzlich existieren folgende tags:
+//Eine TRANSITION EINES CHARS sieht folgend aus:
+//name transition:
+//[NameDerAnimation] (obligatorisch)
+//[hide] (optional)
+//[NameDerTransition] (optional)
+//[Position] (optional)
+//[Zeit] (optional)
 
-#<speed=.2></speed>
-#<FXName=params></FXName>
-#<pause=2>
-#<play=AnimationName>
+//Um mehrere Chars gleichzeitig eine Transition ablaufen zu lassen können diese durch ", " aneinandergereit werden
+//Wird [hide] angegeben, dann wird die Transition rückwärts abgespielt und die Char-Gruppe nach der Transition gelöscht
+//Wird bei der Transition kein Name angegeben, dann wird der Char sofort dargestellt
+//Die Position gibt an, wo der Charakter erscheint. Dabei ist (0:0) in der links-unteren und (100:100) in der rechts-oberen Ecke des Bildschirms
+//Wenn die Position nicht angegeben wird, dann wird die x-position gemittelt und die y-position auf y_default gesetzt (siehe Grundeinstellungen)
+//Die Zeit wie schnell die Transition durchgeführt wird
+//Standardmäßig ist die Zeit =1sec und führt damit innerhalb einer Sekunde aus
+//Um Autoplay zu aktivieren, muss durch ", " eine zweite Zeit an die erste angereit werden.
+//Die zweite Zeit gibt an, ab wann das nächste Kommando abgespielt wird
 
-#speed ändert die Geschwindigkeit, mit der die Charaktere geschrieben werden
-#fx gibt dem Text den angegebenen Effekt (implementiert: )(geplant: Zittern, Springen, Welle, Pulsieren, Regenbogen, Pulswelle, Stauchen) 
-#pause pausiert das Schreiben um die angegebene Zeit in Sekunden. Es muss bei dem Tag kein Abschluss gesetzt werden
-#play spielt die angegebene Animation ab. Es muss bei dem Tag kein Abschluss gesetzt werden
-#mit play können auch audiofiles abgspielt werden
+
+//Ein EFFEKT sieht folgend aus:
+//effect:
+//[NameDesEffektes] (optional)
+//[stop] (optional)
+//[Zeit] (optional)
+
+//Es können mehrere Effekte mit ", " aneinandergereit werden
+//Ein Effekt wird gestoppt, wenn entweder das Ende dieses Textdokumentes erreicht wird oder mit dem Modifier [stop] gestoppt wird
+//Steht [stop] alleine, dann werden alle Effekte gestoppt
+//Die Zeit wie schnell der Effekt aktiviert wird
+//Standardmäßig ist die Zeit =1sec und führt damit innerhalb einer Sekunde aus
+//Um Autoplay zu aktivieren, muss durch ", " eine zweite Zeit an die erste angereit werden.
+//Die zweite Zeit gibt an, ab wann das nächste Kommando abgespielt wird
+
+//Befehle für die GRUNDEINSTELLUNGEN: (optional)
+
+//speechAnimation on/off (default ist off)
+//speechSpeed 5 (default ist 1)
+//y_default 65 (default ist 50)
+
+//Grundeinstellungen müssen immer vor dem ersten Kommando stehen und gelten für das ganze Dokument 
+//speechAnimation [de]aktiviert Sprech-Animation. Wenn die Animation nicht existiert, dann wird automatisch auf off gestellt
+//speechSpeed gibt an wieviele Buchstaben pro Update(=0.02sec) geschrieben werden
+//wenn speechSpeed kleiner oder gleich 0 ist, dann wird der Text direkt angezeigt
+//y_default gibt an, auf welcher Höhe die Chars standardmäßig eingeblendet werden
 
 
+//TEXT_TAGS:
+//siehe dazu: http://digitalnativestudios.com/textmeshpro/docs/rich-text/
+//zusätzlich existieren folgende tags:
+
+//<speed=.2></speed>
+//<FXName=params></FXName>
+//<pause=2>
+//<play=AnimationName>
+
+//speed ändert die Geschwindigkeit, mit der die Charaktere geschrieben werden
+//fx gibt dem Text den angegebenen Effekt (implementiert: rainbow, jump, wave, stretch, scale)(geplant: Pulsieren, Pulswelle) 
+//pause pausiert das Schreiben um die angegebene Zeit in Sekunden. Es muss bei dem Tag kein Abschluss gesetzt werden
+//play spielt die angegebene Animation ab. Es muss bei dem Tag kein Abschluss gesetzt werden
+//mit play können auch audiofiles abgspielt werden
 
 
 
-#Beispiel:
+
+
+//Beispiel:
 
 effect:
 [Regen, Regen_bgm]
@@ -109,10 +109,11 @@ transition:
 
 :
 [1sec, 3sec]
-<speed=-1>Irgendwo am anderen <rainbow=rgb>Ende der Welt: </rainbow></speed>
+<speed=-1>123456<color=green>|||||||</color><wave,amp=.1,frq=200><rainbow=rgb><scale>GRATIS</scale></rainbow></wave><color=red>|||||||</color></speed>
+123456<color=green>|||||||</color>GRATIS<color=red>|||||||</color>
 
 Krita, Antonio, Wolfgang transition:
-[default,default,default]#oder: [default]-> gilt für alle drei
+[default,default,default]//oder: [default]-> gilt für alle drei
 [blende]
 [(20:50)(60:50)(80:50)]
 [2sec]

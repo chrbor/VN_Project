@@ -93,7 +93,7 @@ public class VNProcessing : MonoBehaviour
 
     /// <summary>Wenn wahr, dann wird jedes mal bei einer Textausgabe eines Chars dessen Mund animiert (default: false)</summary>
     public static bool useSpeechAnimation;
-    /// <summary>Gibt an, wie viele character pro fixedUpdate geschrieben werden (default: 1)</summary>
+    /// <summary>Gibt an, wie viele character pro fixedUpdate geschrieben werden (default: .5f)</summary>
     public static float speechSpeed;
     /// <summary>Gibt an, auf welcher Höhe in Prozent die Sprites standardmäßig spawnen (default: 50)</summary>
     public static float y_default;
@@ -125,7 +125,7 @@ public class VNProcessing : MonoBehaviour
         vnProcessing = this;
 
         useSpeechAnimation = false;
-        speechSpeed = 1;
+        speechSpeed = .5f;
         y_default = 50;
 
         selectedChars = new List<string>();
@@ -148,13 +148,13 @@ public class VNProcessing : MonoBehaviour
     /// <param name="line"></param>
     public void VN_Line_Handler(string line)
     {
-        Debug.Log("handling:\n" + line);
+        //Debug.Log("handling:\n" + line);
 
         //Leere output-line:
         if (line.Length == 1 && mode == VNMode.output)
         {
             lineSkipCount++;
-            if(!firstLine) outputSettings.text += line + '\n';
+            if(!firstLine) outputSettings.text += line + "<line-height=100%>" + '\n';
             vnInput.ReadNextPart();
         }
 
@@ -183,8 +183,10 @@ public class VNProcessing : MonoBehaviour
         //Wandle Text um:
         else if(mode == VNMode.outputDefinition || mode == VNMode.output)
         {
+            if (mode == VNMode.outputDefinition) outputSettings.text = "<line-height=.1>" + '\n';
+
             mode = VNMode.output;
-            outputSettings.text += line + '\n';
+            outputSettings.text += line + "<line-height=100%>" +'\n';
             firstLine = false;
             vnInput.ReadNextPart();
         }
@@ -377,7 +379,7 @@ public class VNProcessing : MonoBehaviour
         switch (_mode)
         {
             case VNMode.output:
-                if (lineSkipCount > 0) outputSettings.text = outputSettings.text.Remove(outputSettings.text.Length - lineSkipCount * 2);//lösche alle letzten leeren Zeilen
+                if (lineSkipCount > 0) outputSettings.text = outputSettings.text.Remove(outputSettings.text.Length - lineSkipCount * 20);//lösche alle letzten leeren Zeilen
                 lineSkipCount = 0;
                 firstLine = true;
                 StartCoroutine(vnOutput.PlayText(outputSettings));

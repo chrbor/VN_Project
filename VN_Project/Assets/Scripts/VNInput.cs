@@ -63,19 +63,19 @@ public class VNInput : MonoBehaviour
         ptr_linebreak = ptr;
 
         char _char;
-        int i = 0;
-        for(; i < 1000 || i + ptr >= VN.text.Length; i++)
+        int i = ptr;
+        for(; i < ptr + 1000 || i >= VN.text.Length; i++)
         {
-            _char = VN.text[i + ptr];
-            if (_char == '\n' || _char == '#')
+            _char = VN.text[i];
+            if (_char == '\n' || (_char == '/' && VN.text[i + 1] == '/'))
                 break;
             cmd += _char;
         }
-        if(i == 1000) { Debug.Log("Error: 1000 chars without return!"); return; }
+        if(i == ptr+1000) { Debug.Log("Error: 1000 chars without return!"); return; }
 
-        ptr += i + 1;
+        ptr = i + 1;
 
-        if (VN.text[ptr - 1] == '#') { ptr = VN.text.IndexOf('\n', ptr) + 1; cmd += '\n'; }//skip line
+        if (VN.text[ptr - 1] == '/') { ptr = VN.text.IndexOf('\n', ptr) + 1; cmd += '\n'; }//skip line
         if (cmd.Length < 2 && vnProcessing.mode != VNMode.output) { ReadNextPart(); return; }//überspringe leeren string
 
         vnProcessing.VN_Line_Handler(cmd);
