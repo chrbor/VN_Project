@@ -31,6 +31,19 @@ public class VNOutput : MonoBehaviour
 
     public IEnumerator PlayText(OutputSettings output)
     {
+        //Aktualisiere name:
+        nameText.text = output.charName;
+        if(output.charName == "")
+        {
+            Debug.Log("Narrator");
+            //Setze auf Textbox
+        }
+        else
+        {
+            Debug.Log("Person");
+            //Setze auf Dialogbox
+        }
+
         dialogText.text = "";
         writtenText = "";
         output.speed = speechSpeed;

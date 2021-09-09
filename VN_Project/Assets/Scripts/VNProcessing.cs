@@ -23,6 +23,7 @@ public class VNProcessing : MonoBehaviour
         public float pause;
         public List<string> fxName;
 
+        public string charName = "";
         public string text = "";
 
         public OutputSettings()
@@ -362,6 +363,7 @@ public class VNProcessing : MonoBehaviour
                 {
                     mode = VNMode.outputDefinition;
                     outputSettings = new OutputSettings();
+                    outputSettings.charName = line;
                     return;
                 }
                 selectedChars.RemoveAt(selectedChars.Count - 1);

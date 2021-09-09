@@ -24,13 +24,27 @@ public class VNEffects : MonoBehaviour
         public bool uniform;
         public string sufix;
 
+        public int tagskip
+        {
+            get { return _tagskip; }
+            set
+            {
+                _tagskip = value;
+                if (tagbalancing < _tagskip) tagbalancing = _tagskip;
+            }
+        }
+        private int _tagskip;
+        public int tagbalancing;
+
         public FX_Data(int startptr, string sufix_default = "", bool _uniform = false)
         {
             tag = new List<string[]>();
             range = new Vector2Int(startptr, 0);
             uniform = _uniform;
-
             sufix = sufix_default;
+
+            tagskip = 0;
+            tagbalancing = 0;
         }
     }
 
@@ -90,6 +104,8 @@ public class VNEffects : MonoBehaviour
         //im fall das keine fx-tags vorhanden sind breche ab:
         if (fx_data.Count == 0) return text;
 
+        //setze tagskip zurück:
+        foreach (var data in fx_data) data.tagskip = 0;
 
         string text_out = "";
         int startptr = 0, endptr = 0;//start- und endpunkt der liste der aktiven tags für den jeweiligen buchstaben
@@ -97,21 +113,9 @@ public class VNEffects : MonoBehaviour
         //Laufe die Buchstaben durch und füge die Tags hinzu:
         for (int i = 0; i < text.Length; i++)
         {
-            //umgehe tags im text:
-            if (text[i] == '<')
-            {
-                int i_end = text.IndexOf('>', i);
-                if (i_end > 0 || i_end < text.IndexOf('<', i + 1))//falls innerhalb von <...>, dann überspringe diesen Bereich
-                {
-                    text_out += text.Substring(i, i_end + 1 - i);
-                    i = i_end;
-                    continue;
-                }
-            }
-
             //aktualisiere start- und endpunkt der tags:
             //startpunkt:
-            for(; startptr < fx_data.Count; startptr++)
+            for (; startptr < fx_data.Count; startptr++)
             {
                 Vector2Int range = fx_data[startptr].range;
                 if (range.y == 0) range.y = range.x + fx_data[startptr].tag.Count;
@@ -124,14 +128,41 @@ public class VNEffects : MonoBehaviour
                 if (range.x > i || (range.y < i && range.y != 0)) break;
             }
 
+
+            //umgehe tags im text:
+            if (text[i] == '<')
+            {
+                int i_end = text.IndexOf('>', i);
+                if (i_end > 0 || i_end < text.IndexOf('<', i + 1))//falls innerhalb von <...>, dann überspringe diesen Bereich
+                {
+                    //aktualisiere tagskip:
+                    int tagskip = i_end - i + 1;
+
+                    text_out += text.Substring(i, tagskip);
+                    i = i_end;//setze i ndex auf die position von '>'
+
+
+                    for (int j = startptr; j < endptr; j++)
+                    {
+                        fx_data[j].tagskip += tagskip;
+
+                        if (fx_data[j].uniform)
+                        {
+                            if (i != fx_data[j].range.y - 1) continue;
+                            text_out += fx_data[j].tag[0][1];
+                        }
+                    }
+                    continue;
+                }
+            }
+
+
             //Schreibe Text:
             //prefixe:
             for (int j = startptr; j < endptr; j++)
             {
-                if (j == fx_data.Count || fx_data[j].uniform && i != fx_data[j].range.x) continue;
-                //if (fx_data[j].tag.Count > 0) Debug.Log("prefix: " + fx_data[j].tag[0][1]);
-
-                text_out += fx_data[j].tag[i - fx_data[j].range.x][0];
+                if (j == fx_data.Count || fx_data[j].uniform && i != fx_data[j].range.x + fx_data[j].tagskip) continue;
+                text_out += fx_data[j].tag[i - fx_data[j].range.x - fx_data[j].tagskip][0];
             }
 
             //Buchstabe:
@@ -146,7 +177,7 @@ public class VNEffects : MonoBehaviour
                     text_out += fx_data[j].tag[0][1];
                 }
                 else
-                    text_out += fx_data[j].tag[i - fx_data[j].range.x][1];
+                    text_out += fx_data[j].tag[i - fx_data[j].range.x - fx_data[j].tagskip][1];
             }
         }
 
@@ -330,7 +361,7 @@ public class VNEffects : MonoBehaviour
 
             //Aktualisiere Tag:
             //prefix:
-            int range = data.range.y > 0 ? data.range.y - data.range.x : textLength - data.range.x;
+            int range = (data.range.y > 0 ? data.range.y - data.range.x : textLength - data.range.x) - data.tagbalancing;
             float size = (Mathf.Sin((Time.time * frq) * Mathf.PI)/2 +.5f) * (amp-1) + 1;
             float dist = size * .7f;
             data.tag[0][0] = "<mspace=" + (dist).ToString(culture) + "em>"

@@ -1,8 +1,13 @@
 //Dies ist ein Kommentar!
+/*
+Dies ist ein Kommentar
+über mehrere Zeilen
+*/
+
 
 //Hier eine kurze Erklärung, wie das Programm funktioniert:
 //Das Programm arbeitet mit TextMeshPro
-//Ein Befehl kann eine Transition, ein Effekt oder eine Textausgabe sein
+//Ein Befehl kann eine Transition, ein Effekt eine Textausgabe oder eine Verzweigung sein
 
 
 //Eine TEXTAUSGABE sieht folgend aus:
@@ -10,7 +15,7 @@
 //[overlay] (optional)
 //[Zeit] (optional)
 //Text, der gesprochen wird.
-
+//
 //Wenn kein Name angegeben werden soll, dann muss nur doppelpunkt geschrieben werden
 //Um Doppelpunkte in der Textausgabe zu verwenden darf dahinter kein Zeilenumbruch gesetzt werden
 //Wenn overlay angegeben ist, dann umspannt das TextFeld den ganzen Bildschirm
@@ -23,7 +28,7 @@
 //[/pfad/zum/nächsten/Hintergrund] (optional)
 //[NameDerTransition] (optional)
 //[Zeit] (optional)
-
+//
 //Wird bei der Transition kein Hintergrund angegeben, dann läuft die Transition in den leeren Hintergrund
 //Wird kein Name der Transition angegeben, dann wird der nächste Hintergrund sofort angezeigt
 //Die Zeit wie schnell die Transition durchgeführt wird
@@ -39,7 +44,7 @@
 //[NameDerTransition] (optional)
 //[Position] (optional)
 //[Zeit] (optional)
-
+//
 //Um mehrere Chars gleichzeitig eine Transition ablaufen zu lassen können diese durch ", " aneinandergereit werden
 //Wird [hide] angegeben, dann wird die Transition rückwärts abgespielt und die Char-Gruppe nach der Transition gelöscht
 //Wird bei der Transition kein Name angegeben, dann wird der Char sofort dargestellt
@@ -56,7 +61,7 @@
 //[NameDesEffektes] (optional)
 //[stop] (optional)
 //[Zeit] (optional)
-
+//
 //Es können mehrere Effekte mit ", " aneinandergereit werden
 //Ein Effekt wird gestoppt, wenn entweder das Ende dieses Textdokumentes erreicht wird oder mit dem Modifier [stop] gestoppt wird
 //Steht [stop] alleine, dann werden alle Effekte gestoppt
@@ -65,12 +70,38 @@
 //Um Autoplay zu aktivieren, muss durch ", " eine zweite Zeit an die erste angereit werden.
 //Die zweite Zeit gibt an, ab wann das nächste Kommando abgespielt wird
 
-//Befehle für die GRUNDEINSTELLUNGEN: (optional)
 
+//Eine VERZWEIGUNG sieht folgend aus:
+//branch:
+//[ersterPfadoderLabelZumDokument]
+//Text für die erste Auswahlmöglichkeit
+//[zweiterPfadoderLabelZumDokument]
+//Text für die zweite Auswahlmöglichkeit
+//...usw,,,
+//
+//Es muss mindestens ein Pfad angegeben werden. Der Pfad kann hierbei auch der Name eines Labels sein. 
+//Wird der Pfad und ein Label angegeben (z.B. [/chpt1/dok2.txt, label3]), dann springt der Pointer zu diesem Label in dem angegebenen Dokument. 
+
+
+//Ein LABEL sieht folgend aus:
+//~NameDesLabels:
+//
+//Innerhalb des Dokuments kann mit dem Befehl GOTO zu einem Tag gesprungen werden
+//Ein GOTO Befehl sieht folgend aus:
+//goto nameDesLabels:
+
+
+//Weitere BEFEHLE:
+//end:  stoppt das Auslesen des Dokuments
+//idle:  vorheriger Befehl wird ausgeführt und Änderungen in den Grundeinstellungen können gemacht werden
+
+
+//Befehle für die GRUNDEINSTELLUNGEN: (optional)
+//
 //speechAnimation on/off (default ist off)
 //speechSpeed 5 (default ist 1)
 //y_default 65 (default ist 50)
-
+//
 //Grundeinstellungen müssen immer vor dem ersten Kommando stehen und gelten für das ganze Dokument 
 //speechAnimation [de]aktiviert Sprech-Animation. Wenn die Animation nicht existiert, dann wird automatisch auf off gestellt
 //speechSpeed gibt an wieviele Buchstaben pro Update(=0.02sec) geschrieben werden
@@ -81,24 +112,26 @@
 //TEXT_TAGS:
 //siehe dazu: http://digitalnativestudios.com/textmeshpro/docs/rich-text/
 //zusätzlich existieren folgende tags:
-
+//
 //<speed=.2></speed>
 //<FXName=params></FXName>
 //<pause=2>
 //<play=AnimationName>
-
+//
 //speed ändert die Geschwindigkeit, mit der die Charaktere geschrieben werden
 //fx gibt dem Text den angegebenen Effekt (implementiert: rainbow, jump, wave, stretch, scale)(geplant: Pulsieren, Pulswelle) 
 //pause pausiert das Schreiben um die angegebene Zeit in Sekunden. Es muss bei dem Tag kein Abschluss gesetzt werden
 //play spielt die angegebene Animation ab. Es muss bei dem Tag kein Abschluss gesetzt werden
-//mit play können auch audiofiles abgspielt werden
-
-
-
+//mit play können auch audiofiles abgespielt werden
 
 
 //Beispiel:
 
+/*
+~ERSTES LABEL:
+
+~ZWEITES LABEL:
+*/
 effect:
 [Regen, Regen_bgm]
 [1sec]
@@ -107,9 +140,9 @@ transition:
 [/ch_01/Weltrand]
 [blende]
 
-:
+Krita, Antonio, Wolfgang:
 [1sec, 3sec]
-<speed=-1>123456<color=green>|||||||</color><wave,amp=.1,frq=200><rainbow=rgb><scale>GRATIS</scale></rainbow></wave><color=red>|||||||</color></speed>
+<speed=-1>123456<rainbow=rgb><b>GRATIS</b></rainbow></speed>
 123456<color=green>|||||||</color>GRATIS<color=red>|||||||</color>
 
 Krita, Antonio, Wolfgang transition:
@@ -128,7 +161,7 @@ Doch jetzt wird es Zeit dem allen ein Ende zu bereiten.
 Blabliblub!!!
 
 Antonio:
-<play=Schrei><align=center><tremble><b>Nnnneeeeeiiiiinnnnn!!!!</b></align></tremble>
+<play=Schrei><align=center><wave, amp=.1,frq=200><b>Nnnneeeeeiiiiinnnnn!!!!</b></align></wave>
 
 Krita, Antonio, Wolfgang transition:
 [blende]
@@ -138,3 +171,5 @@ Krita, Antonio, Wolfgang transition:
 effect:
 [Regen, Regen_bgm]
 [stop]
+
+end:

@@ -1279,7 +1279,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 1599243766}
-    characterCount: 54
+    characterCount: 53
     spriteCount: 0
     spaceCount: 1
     wordCount: 4
@@ -1344,8 +1344,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -553.9, y: 109.975006}
-  m_SizeDelta: {x: -1147.8, y: -99.95001}
+  m_AnchoredPosition: {x: -351.5, y: 109.975006}
+  m_SizeDelta: {x: -742.9, y: -100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1706074370
 MonoBehaviour:
@@ -1411,7 +1411,7 @@ MonoBehaviour:
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
-  m_firstOverflowCharacterIndex: 2
+  m_firstOverflowCharacterIndex: -1
   m_linkedTextComponent: {fileID: 0}
   m_isLinkedTextComponent: 0
   m_isTextTruncated: 0
@@ -1440,7 +1440,7 @@ MonoBehaviour:
     spaceCount: 0
     wordCount: 1
     linkCount: 0
-    lineCount: 4
+    lineCount: 1
     pageCount: 1
     materialCount: 1
   m_isUsingLegacyAnimationComponent: 0
